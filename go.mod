@@ -3,6 +3,8 @@ module github.com/yqchilde/gint
 go 1.16
 
 require (
+	github.com/casbin/casbin/v2 v2.34.1
+	github.com/casbin/gorm-adapter/v3 v3.3.2
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-redis/redis/extra/redisotel/v8 v8.10.0
