@@ -3,35 +3,29 @@ package config
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 
-	"github.com/yqchilde/gint/pkg/logger"
+	"github.com/yqchilde/gint/pkg/env"
 )
 
 var Cfg = &Config{}
 
-const (
-	configDefaultPath = "config"
-	configDefaultName = "config"
-)
+const configDefaultPath = "config"
 
 // Init config
-func Init(configPath ...string) (*Config, error) {
-	var path string
-	if len(configPath) == 1 {
-		path = configPath[0]
-	}
-	cfgFile, err := LoadConfig(path)
+func Init() (*Config, error) {
+	cfgFile, err := LoadConfig(configDefaultPath)
 	if err != nil {
-		logger.Fatalf("LoadConfig: %v", err)
+		log.Fatalf("LoadConfig: %v", err)
 	}
 
 	Cfg, err = ParseConfig(cfgFile)
 	if err != nil {
-		logger.Fatalf("ParseConfig: %v", err)
+		log.Fatalf("ParseConfig: %v", err)
 	}
 
 	go watchConfig(cfgFile)
@@ -42,14 +36,8 @@ func Init(configPath ...string) (*Config, error) {
 // LoadConfig load config file from given path
 func LoadConfig(confPath string) (*viper.Viper, error) {
 	v := viper.New()
-	if confPath != "" {
-		// 指定路径
-		v.SetConfigFile(confPath)
-	} else {
-		// 默认路径
-		v.AddConfigPath(configDefaultPath)
-		v.SetConfigName(configDefaultName)
-	}
+	v.AddConfigPath(confPath)
+	v.SetConfigName(fmt.Sprintf("config.%s", env.GetEnv()))
 	v.SetConfigType("yaml")
 
 	replacer := strings.NewReplacer(".", "_")
@@ -80,6 +68,6 @@ func ParseConfig(v *viper.Viper) (*Config, error) {
 func watchConfig(v *viper.Viper) {
 	v.WatchConfig()
 	v.OnConfigChange(func(e fsnotify.Event) {
-		logger.Infof("[Config] file changed: %s", e.Name)
+		log.Printf("Config file changed: %s", e.Name)
 	})
 }

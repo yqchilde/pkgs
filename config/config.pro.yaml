@@ -1,0 +1,97 @@
+server:
+  # 项目名字
+  name: gint
+  # 项目模式：debug, release, test
+  mode: release
+  # 开启ssl
+  ssl: false
+  # 开启debug
+  debug: true
+  # jwt秘钥
+  jwt-secret: jwt-secret
+  # jwt有效期，默认1天
+  jwt-expire-time: 86400
+  # casbin模型路径
+  casbin-model-path: ./config/rbac_model.conf
+
+http:
+  addr: :8080
+  read-timeout: 5
+  write-timeout: 5
+
+grpc:
+  addr: :9090
+  read-timeout: 5
+  write-timeout: 5
+
+logger:
+  # 开发模式
+  development: false
+  # 禁用caller
+  disable-caller: false
+  # 禁用stacktrace
+  disable-stacktrace: false
+  # 编码类型：json, console
+  encoding: json
+  # 日志级别：debug, info, warn, error, fatal
+  level: info
+  # 日志名
+  name: gint
+  # 输出类型：file, console
+  writers: console
+  # 日志保存路径
+  logger-file: /log/gint.log
+  # 警告日志保存路径
+  logger-warnfile: /log/gint-wf.log
+  # 错误日志保存路径
+  logger-errorfile: /log/gint-err.log
+  # 日志滚动策略
+  log-rolling-policy: daily
+  # 日志轮换日期
+  log-rotate-date: 1
+  # 日志轮换大小
+  log-rotate-size: 1
+  # 日志备份数量
+  log-backup-count: 7
+
+mysql:
+  # 数据库地址，如果是docker，可以替换为对应的服务名称，eg:db:3306
+  addr: localhost:3306
+  # 数据库名称
+  database: gint
+  # 数据库用户名
+  username: root
+  # 数据库密码
+  password: black123
+  # 是否显示日志
+  show-log: true
+  # 最大闲置的连接数，0意味着使用默认的大小2，小于0表示不使用连接池
+  max-idle-conn: 10
+  # 最大打开的连接数，需要小于数据库配置中的max-connections数
+  max-open-conn: 60
+  # 单个连接的最大存活时间，建议设置比数据库超时时长(wait_timeout)稍小一些
+  conn-max-life-time: 60m
+  # 是否自动迁移Model的数据表
+  auto-migrate: true
+
+redis:
+  # 数据库地址，如果是docker，可以替换为对应的服务名称，eg:db:6379
+  addr: localhost:6379
+  # 数据库密码
+  password: ""
+  # 数据库索引
+  db: 0
+  # 最小闲置连接数
+  min-idle-conn: 200
+  # 连接超时时间
+  dial-timeout: 60s
+  # 允许读超时时间
+  read-timeout: 500ms
+  # 允许写超时时间
+  write-timeout: 500ms
+  # 连接池大小
+  pool-size: 12000
+  # 连接池超时时间
+  pool-timeout: 240
+  # 是否开启trace
+  is-trace: true
