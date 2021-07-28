@@ -4,7 +4,6 @@ package config
 type ServerConfig struct {
 	Name  string `mapstructure:"name"`
 	Mode  string `mapstructure:"mode"`
-	URL   string `mapstructure:"url"`
 	SSL   bool   `mapstructure:"ssl"`
 	Debug bool   `mapstructure:"debug"`
 
