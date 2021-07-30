@@ -5,6 +5,7 @@ import (
 
 	"github.com/yqchilde/gint/internal/dao"
 	"github.com/yqchilde/gint/internal/model"
+	"github.com/yqchilde/gint/internal/server"
 	"github.com/yqchilde/gint/internal/service"
 	"github.com/yqchilde/gint/pkg/app"
 	"github.com/yqchilde/gint/pkg/config"
@@ -34,7 +35,7 @@ func main() {
 	a := app.New(cfg,
 		app.WithName("gint"),
 		app.Server(
-			service.NewHttpServer(cfg),
+			server.NewHttpServer(cfg),
 		),
 	)
 

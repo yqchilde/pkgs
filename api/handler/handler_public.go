@@ -10,19 +10,19 @@ import (
 	"github.com/yqchilde/gint/pkg/validator"
 )
 
-func AddCasbinRule(c *gin.Context) {
-	var r request.CasbinInReceive
+func SignUp(c *gin.Context) {
+	var r request.SignUp
 	if err := c.ShouldBindJSON(&r); err != nil {
 		response.Error(c, errcode.ErrBind)
 		return
 	}
 
-	if err := validator.Verify(r, model.CasbinVerify); err != nil {
+	if err := validator.Verify(r, model.SignUpVerify); err != nil {
 		response.Error(c, errcode.ErrParamValidation.WithDetails(err.Error()))
 		return
 	}
 
-	err := service.AuthSvc.AddCasbinRule(c, &r)
+	err := service.PubSvc.SignUp(c, &r)
 	if err != nil {
 		response.Error(c, errcode.ErrInternalServerError.WithDetails(err.Error()))
 		return
@@ -31,17 +31,23 @@ func AddCasbinRule(c *gin.Context) {
 	response.Success(c, nil)
 }
 
-func TestCasbinRule(c *gin.Context) {
-	response.Success(c, nil)
-}
+func SignIn(c *gin.Context) {
+	var r request.SignIn
+	if err := c.ShouldBindJSON(&r); err != nil {
+		response.Error(c, errcode.ErrBind)
+		return
+	}
 
-func AddJwtBlackList(c *gin.Context) {
-	jwtToken := c.GetHeader("Authorization")
-	err := service.AuthSvc.AddJwtBlacklist(c, jwtToken)
+	if err := validator.Verify(r, model.SignInVerify); err != nil {
+		response.Error(c, errcode.ErrParamValidation.WithDetails(err.Error()))
+		return
+	}
+
+	data, err := service.PubSvc.SignIn(c, &r)
 	if err != nil {
 		response.Error(c, errcode.ErrInternalServerError.WithDetails(err.Error()))
 		return
 	}
 
-	response.Success(c, nil)
+	response.Success(c, data)
 }

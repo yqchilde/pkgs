@@ -7,11 +7,7 @@ type ServerConfig struct {
 	SSL   bool   `mapstructure:"ssl"`
 	Debug bool   `mapstructure:"debug"`
 
-	AuthConfig
-}
-
-// AuthConfig for jwt and casbin verify
-type AuthConfig struct {
+	// AuthConfig
 	JwtSecret       string `mapstructure:"jwt-secret"`
 	JwtExpireTime   int64  `mapstructure:"jwt-expire-time"`
 	CasbinModelPath string `mapstructure:"casbin-model-path"`

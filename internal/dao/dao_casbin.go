@@ -12,12 +12,12 @@ import (
 	"github.com/yqchilde/gint/pkg/logger"
 )
 
-func (d *Dao) newCasbin() *casbin.SyncedEnforcer {
+func (d *Dao) NewCasbin() *casbin.SyncedEnforcer {
 	return auth.NewCasbin(d.db, d.cfg.Server.CasbinModelPath)
 }
 
 func (d *Dao) RemoveCasbinRule(v int, p ...string) bool {
-	e := d.newCasbin()
+	e := d.NewCasbin()
 	status, err := e.RemoveFilteredPolicy(v, p...)
 	if err != nil {
 		logger.Error("[Dao.casbin] RemoveCasbinRule failed: %s", err.Error())
@@ -39,7 +39,7 @@ func (d *Dao) AddCasbinRule(ctx context.Context, authorityID string, casbinInfos
 		}
 		rules = append(rules, []string{cm.AuthorityId, cm.Path, cm.Method})
 	}
-	e := d.newCasbin()
+	e := d.NewCasbin()
 	_, err := e.AddPolicies(rules)
 	if err != nil {
 		return errors.Wrap(err, "[Dao.casbin] AddCasbinRule AddPolicies failed")

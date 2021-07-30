@@ -16,6 +16,7 @@ func Init(cfg *orm.Config) *gorm.DB {
 	if cfg.AutoMigrate {
 		if err := DB.AutoMigrate(
 			new(User),
+			new(JwtBlacklist),
 		); err != nil {
 			logger.Errorf("gorm auto migrate, err: %+v", err)
 		}

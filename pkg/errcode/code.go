@@ -17,5 +17,6 @@ var (
 	ErrLimitExceed         = NewError(10113, "Beyond limit")
 	ErrServiceUnavailable  = NewError(10114, "Service Unavailable")
 
-	ErrParamValidation = NewError(10115, "Request parameter verification failed: %s")
+	ErrParamValidation   = NewError(10115, "Request parameter verification failed")
+	ErrInvalidPermission = NewError(10116, "Invalid permission")
 )

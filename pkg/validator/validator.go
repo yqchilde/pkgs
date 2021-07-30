@@ -2,7 +2,6 @@ package validator
 
 import (
 	"errors"
-	"log"
 	"reflect"
 	"strconv"
 	"strings"
@@ -156,7 +155,6 @@ func isBlank(value reflect.Value) bool {
 func compare(value interface{}, VerifyStr string) bool {
 	VerifyStrArr := strings.Split(VerifyStr, "=")
 	val := reflect.ValueOf(value)
-	log.Println("val.kind: ", val.Kind())
 	switch val.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		VInt, VErr := strconv.ParseInt(VerifyStrArr[1], 10, 64)

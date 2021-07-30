@@ -1,4 +1,4 @@
-package service
+package server
 
 import (
 	"github.com/yqchilde/gint/api/router"

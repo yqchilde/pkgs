@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -31,8 +30,8 @@ func (r *Response) Success(c *gin.Context, data interface{}) {
 	})
 }
 
-func (r *Response) Error(c *gin.Context, err *errcode.Error, args ...interface{}) {
-	response := gin.H{"code": err.Code(), "msg": fmt.Sprintf(err.Msg(), args...), "data": gin.H{}}
+func (r *Response) Error(c *gin.Context, err *errcode.Error) {
+	response := gin.H{"code": err.Code(), "msg": err.Msg(), "data": gin.H{}}
 	details := err.Details()
 	if len(details) > 0 {
 		response["details"] = details
