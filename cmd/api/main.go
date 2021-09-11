@@ -3,43 +3,38 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/yqchilde/gint/internal/dao"
-	"github.com/yqchilde/gint/internal/model"
-	"github.com/yqchilde/gint/internal/server"
-	"github.com/yqchilde/gint/internal/service"
-	"github.com/yqchilde/gint/pkg/app"
-	"github.com/yqchilde/gint/pkg/config"
-	"github.com/yqchilde/gint/pkg/logger"
-	"github.com/yqchilde/gint/pkg/redis"
+	"github.com/yqchilde/gin-skeleton/internal/server"
+	"github.com/yqchilde/gin-skeleton/internal/store"
+	"github.com/yqchilde/gin-skeleton/pkg/app"
+	"github.com/yqchilde/gin-skeleton/pkg/conf"
+	logger "github.com/yqchilde/gin-skeleton/pkg/log"
+	"github.com/yqchilde/gin-skeleton/pkg/redis"
 )
 
 func main() {
 	// init config
-	cfg, err := config.Init()
+	cfg, err := conf.Init()
 	if err != nil {
 		panic(err)
 	}
 
-	// init logger, mysql and redis
+	// init component
 	logger.Init(&cfg.Logger)
-	model.Init(&cfg.MySQL)
+	store.Init(&cfg.MySQL)
 	redis.Init(&cfg.Redis)
 
-	// init service
-	service.New(cfg, dao.New(model.GetDB(), cfg))
+	gin.SetMode(conf.Conf.App.Mode)
 
-	// set gin mode
-	gin.SetMode(cfg.Server.Mode)
-
-	// init app
-	a := app.New(cfg,
-		app.WithName("gint"),
+	_app := app.New(
+		cfg,
+		app.WithName(cfg.App.Name),
+		app.WithLogger(logger.GetLogger()),
 		app.Server(
-			server.NewHttpServer(cfg),
+			server.NewHttpServer(conf.Conf),
 		),
 	)
 
-	if err := a.Run(); err != nil {
+	if err := _app.Run(); err != nil {
 		panic(err)
 	}
 }

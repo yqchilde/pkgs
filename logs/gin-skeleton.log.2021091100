@@ -1,0 +1,2 @@
+{"level":"info","ts":"2021-09-11T14:48:20.767+0800","caller":"api/main.go:37","msg":"app_id: gin-skeleton, app_name: %!s(MISSING), version: %!s(MISSING)"}
+{"level":"info","ts":"2021-09-11T14:48:20.769+0800","caller":"app/app.go:62","msg":"[HTTP] server is listening on: [::]:8080"}

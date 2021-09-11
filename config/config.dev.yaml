@@ -38,7 +38,7 @@ logger:
   # 日志名
   name: gin-skeleton
   # 输出类型：file, console，可同时填写
-  writers: console
+  writers: file
   # 日志保存路径
   logger-file: logs/gin-skeleton.log
   # 警告日志保存路径

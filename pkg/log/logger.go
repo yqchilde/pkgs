@@ -37,9 +37,9 @@ type Config struct {
 	Level             string `mapstructure:"level"`
 	Name              string `mapstructure:"name"`
 	Writers           string `mapstructure:"writers"`
-	LoggerFile        string `mapstructure:"log-file"`
-	LoggerWarnFile    string `mapstructure:"log-warn-file"`
-	LoggerErrorFile   string `mapstructure:"log-error-file"`
+	LoggerFile        string `mapstructure:"logger-file"`
+	LoggerWarnFile    string `mapstructure:"logger-warn-file"`
+	LoggerErrorFile   string `mapstructure:"logger-error-file"`
 	LogFormatText     bool   `mapstructure:"log-format-text"`
 	LogRollingPolicy  string `mapstructure:"log-rolling-policy"`
 	LogRotateDate     int    `mapstructure:"log-rotate-date"`

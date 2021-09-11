@@ -3,8 +3,7 @@ package conf
 import (
 	"time"
 
-	"gorm.io/gorm/logger"
-
+	"github.com/yqchilde/gin-skeleton/pkg/log"
 	"github.com/yqchilde/gin-skeleton/pkg/redis"
 	"github.com/yqchilde/gin-skeleton/pkg/storage/orm"
 )
@@ -16,7 +15,7 @@ type Config struct {
 	Grpc ServerConfig
 
 	// component conf
-	Logger logger.Config
+	Logger log.Config
 	MySQL  orm.Config
 	Redis  redis.Config
 }
