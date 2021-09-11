@@ -1,0 +1,133 @@
+definitions:
+  app.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      details:
+        items:
+          type: string
+        type: array
+      msg:
+        type: string
+    type: object
+  application.CreateRequest:
+    properties:
+      app_name:
+        type: string
+      user_id:
+        type: string
+    required:
+    - app_name
+    - user_id
+    type: object
+  application.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  application.RegisterRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /app/v1/application:
+    post:
+      description: developer create application in application center
+      parameters:
+      - description: Request parameter
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/application.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: developer create application
+      tags:
+      - App
+  /app/v1/application/:id:
+    delete:
+      description: developer delete application in application center
+      parameters:
+      - description: application id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: developer delete application
+      tags:
+      - App
+  /app/v1/login:
+    post:
+      description: Only for developer login
+      parameters:
+      - description: Request parameter
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/application.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: developer login
+      tags:
+      - App
+  /app/v1/request:
+    post:
+      description: Only for developer register
+      parameters:
+      - description: Request parameter
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/application.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: developer register
+      tags:
+      - App
+swagger: "2.0"

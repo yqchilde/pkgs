@@ -11,6 +11,13 @@ import (
 )
 
 // CreateApp developer create application
+// @Summary developer create application
+// @Description developer create application in application center
+// @Tags App
+// @Produce json
+// @Param req body CreateRequest true "Request parameter"
+// @Success 200 {object} app.Response
+// @Router /app/v1/application [post]
 func CreateApp(ctx *gin.Context) {
 	var req CreateRequest
 	valid, errs := app.BindAndValid(ctx, &req)
@@ -30,6 +37,14 @@ func CreateApp(ctx *gin.Context) {
 	response.Success(ctx, data)
 }
 
+// DeleteApp developer delete application
+// @Summary developer delete application
+// @Description developer delete application in application center
+// @Tags App
+// @Produce json
+// @Param id query string true "application id"
+// @Success 200 {object} app.Response
+// @Router /app/v1/application/:id [delete]
 func DeleteApp(ctx *gin.Context) {
 	appID := ctx.Param("id")
 	if appID == "" {

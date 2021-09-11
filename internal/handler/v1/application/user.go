@@ -11,6 +11,13 @@ import (
 )
 
 // Register developer register
+// @Summary developer register
+// @Description Only for developer register
+// @Tags App
+// @Produce json
+// @Param req body RegisterRequest true "Request parameter"
+// @Success 200 {object} app.Response
+// @Router /app/v1/request [post]
 func Register(ctx *gin.Context) {
 	var req RegisterRequest
 	valid, errs := app.BindAndValid(ctx, &req)
@@ -31,6 +38,13 @@ func Register(ctx *gin.Context) {
 }
 
 // Login developer login
+// @Summary developer login
+// @Description Only for developer login
+// @Tags App
+// @Produce json
+// @Param req body LoginRequest true "Request parameter"
+// @Success 200 {object} app.Response
+// @Router /app/v1/login [post]
 func Login(ctx *gin.Context) {
 	var req LoginRequest
 	valid, errs := app.BindAndValid(ctx, &req)

@@ -2,7 +2,10 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 
+	_ "github.com/yqchilde/gin-skeleton/docs"
 	"github.com/yqchilde/gin-skeleton/internal/handler/v1/application"
 	"github.com/yqchilde/gin-skeleton/pkg/middleware"
 )
@@ -13,6 +16,9 @@ func NewRouter() *gin.Engine {
 	//r.Use(middleware.NoCache)
 	//r.Use(middleware.Options)
 	//r.Use(middleware.Logging())
+
+	// swagger api docs
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Application center
 	appApi := r.Group("/app")
