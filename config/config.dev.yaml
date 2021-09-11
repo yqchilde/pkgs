@@ -1,6 +1,6 @@
-server:
+app:
   # 项目名字
-  name: gint
+  name: gin-skeleton
   # 项目模式：debug, release, test
   mode: test
   # 开启ssl
@@ -12,7 +12,7 @@ server:
   # jwt有效期，默认1天
   jwt-expire-time: 86400
   # casbin模型路径
-  casbin-model-path: ./config/rbac_model.conf
+  casbin-model-path: ./conf/rbac_model.conf
 
 http:
   addr: :8080
@@ -36,15 +36,15 @@ logger:
   # 日志级别：debug, info, warn, error, fatal
   level: info
   # 日志名
-  name: gint
-  # 输出类型：file, console
+  name: gin-skeleton
+  # 输出类型：file, console，可同时填写
   writers: console
   # 日志保存路径
-  logger-file: /log/gint.log
+  logger-file: logs/gin-skeleton.log
   # 警告日志保存路径
-  logger-warnfile: /log/gint-wf.log
+  logger-warn-file: logs/gin-skeleton-wf.log
   # 错误日志保存路径
-  logger-errorfile: /log/gint-err.log
+  logger-error-file: logs/gin-skeleton-err.log
   # 日志滚动策略
   log-rolling-policy: daily
   # 日志轮换日期
@@ -58,7 +58,7 @@ mysql:
   # 数据库地址，如果是docker，可以替换为对应的服务名称，eg:db:3306
   addr: localhost:3306
   # 数据库名称
-  database: gint
+  database: gin-skeleton
   # 数据库用户名
   username: root
   # 数据库密码

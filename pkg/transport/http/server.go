@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yqchilde/gint/pkg/logger"
+	"github.com/yqchilde/gin-skeleton/pkg/log"
 )
 
 type Server struct {
@@ -16,7 +16,7 @@ type Server struct {
 	network string
 	address string
 	timeout time.Duration
-	log     logger.Logger
+	log     log.Logger
 }
 
 func NewServer(opts ...ServerOption) *Server {
@@ -24,36 +24,36 @@ func NewServer(opts ...ServerOption) *Server {
 		network: "tcp",
 		address: ":8080",
 		timeout: time.Second,
-		log:     logger.GetLogger(),
+		log:     log.GetLogger(),
 	}
-
 	for _, o := range opts {
 		o(srv)
 	}
 
-	srv.Server = &http.Server{Handler: srv}
+	srv.Server = &http.Server{
+		Handler: srv,
+	}
 	return srv
 }
 
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.ServeHTTP(w, r)
+func (s *Server) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+	s.ServeHTTP(resp, req)
 }
 
-func (s *Server) Start() error {
+func (s *Server) Start(ctx context.Context) error {
 	lis, err := net.Listen(s.network, s.address)
 	if err != nil {
 		return err
 	}
 	s.lis = lis
-	s.log.Info("[HTTP] Server is listening on: %s", lis.Addr().String())
+	s.log.Infof("[HTTP] server is listening on: %s", lis.Addr().String())
 	if err := s.Serve(lis); !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
-
 	return nil
 }
 
-func (s *Server) Stop() error {
-	s.log.Info("[HTTP] Server is stopping")
-	return s.Shutdown(context.Background())
+func (s *Server) Stop(ctx context.Context) error {
+	s.log.Info("[HTTP] server is stopping")
+	return s.Shutdown(ctx)
 }

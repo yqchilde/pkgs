@@ -1,4 +1,4 @@
-package config
+package conf
 
 import (
 	"errors"
@@ -9,10 +9,10 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 
-	"github.com/yqchilde/gint/pkg/env"
+	"github.com/yqchilde/gin-skeleton/pkg/env"
 )
 
-var Cfg = &Config{}
+var Conf = &Config{}
 
 const configDefaultPath = "config"
 
@@ -23,14 +23,14 @@ func Init() (*Config, error) {
 		log.Fatalf("LoadConfig: %v", err)
 	}
 
-	Cfg, err = ParseConfig(cfgFile)
+	Conf, err = ParseConfig(cfgFile)
 	if err != nil {
 		log.Fatalf("ParseConfig: %v", err)
 	}
 
 	go watchConfig(cfgFile)
 
-	return Cfg, nil
+	return Conf, nil
 }
 
 // LoadConfig load config file from given path

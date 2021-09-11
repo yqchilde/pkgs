@@ -13,16 +13,17 @@ type Error struct {
 
 var codes = map[int]struct{}{}
 
+// NewError warp error
 func NewError(code int, msg string) *Error {
 	if _, ok := codes[code]; ok {
-		panic(fmt.Sprintf("code %d is exists, please change one", code))
+		panic(fmt.Sprintf("The error code %d exists", code))
 	}
 	codes[code] = struct{}{}
 	return &Error{code: code, msg: msg}
 }
 
 func (e Error) Error() string {
-	return fmt.Sprintf("code: %d, msg: %s", e.code, e.msg)
+	return fmt.Sprintf("code: %d, msg: %s", e.Code(), e.Msg())
 }
 
 func (e *Error) Code() int {
@@ -56,7 +57,7 @@ func (e *Error) StatusCode() int {
 	switch e.Code() {
 	case Success.Code():
 		return http.StatusOK
-	case ErrInternalServerError.Code():
+	case ErrInternalServer.Code():
 		return http.StatusInternalServerError
 	case ErrInvalidParam.Code():
 		return http.StatusBadRequest
@@ -77,16 +78,16 @@ func (e *Error) StatusCode() int {
 
 // Err represents an error
 type Err struct {
-	Code    int
-	Message string
-	Err     error
+	Code int
+	Msg  string
+	Err  error
 }
 
 func (err *Err) Error() string {
-	return fmt.Sprintf("Err - code: %d, message: %s, error: %s", err.Code, err.Message, err.Err)
+	return fmt.Sprintf("Err - code: %d, message: %s, error: %s", err.Code, err.Msg, err.Err)
 }
 
-// DecodeErr ...
+// DecodeErr decode the error and return the error code and error message
 func DecodeErr(err error) (int, string) {
 	if err == nil {
 		return Success.code, Success.msg
@@ -94,11 +95,11 @@ func DecodeErr(err error) (int, string) {
 
 	switch typed := err.(type) {
 	case *Err:
-		return typed.Code, typed.Message
+		return typed.Code, typed.Msg
 	case *Error:
 		return typed.code, typed.msg
 	default:
 	}
 
-	return ErrInternalServerError.Code(), err.Error()
+	return ErrInternalServer.Code(), err.Error()
 }

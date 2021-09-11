@@ -7,10 +7,9 @@ import (
 	"github.com/go-redis/redis/extra/redisotel/v8"
 	"github.com/go-redis/redis/v8"
 
-	"github.com/yqchilde/gint/pkg/logger"
+	"github.com/yqchilde/gin-skeleton/pkg/log"
 )
 
-// RC redis 客户端
 var RC *redis.Client
 
 // ErrRedisNotFound not exist in redis
@@ -46,7 +45,7 @@ func Init(c *Config) *redis.Client {
 
 	_, err := RC.Ping(context.Background()).Result()
 	if err != nil {
-		logger.Panicf("[redis] redis ping err: %+v", err)
+		log.Panicf("[redis] redis ping err: %+v", err)
 	}
 
 	// hook tracing (with open telemetry)

@@ -3,18 +3,18 @@ package env
 import "os"
 
 const (
-	// EnvDev development environment
-	EnvDev = "dev"
-	// EnvPro production environment
-	EnvPro = "pro"
-	// EnvTest local test environment
-	EnvTest = "test"
+	// DevEnv development environment
+	DevEnv = "dev"
+	// ProEnv production environment
+	ProEnv = "pro"
+	// TestEnv local test environment
+	TestEnv = "test"
 )
 
 func GetEnv() string {
 	env := os.Getenv("env_mode")
 	if env == "" {
-		return EnvTest
+		return TestEnv
 	}
 
 	return env

@@ -5,37 +5,54 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/yqchilde/gint/pkg/errcode"
+	"github.com/yqchilde/gin-skeleton/pkg/errcode"
 )
 
 type Response struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Msg     string      `json:"msg"`
+	Data    interface{} `json:"data"`
+	Details []string    `json:"details"`
 }
 
 func NewResponse() *Response {
 	return &Response{}
 }
 
-func (r *Response) Success(c *gin.Context, data interface{}) {
+func (r *Response) Success(ctx *gin.Context, data interface{}) {
 	if data == nil {
 		data = gin.H{}
 	}
 
-	c.JSON(http.StatusOK, Response{
-		Code: errcode.Success.Code(),
-		Msg:  errcode.Success.Msg(),
-		Data: data,
+	ctx.JSON(http.StatusOK, Response{
+		Code:    errcode.Success.Code(),
+		Msg:     errcode.Success.Msg(),
+		Data:    data,
+		Details: []string{},
 	})
 }
 
-func (r *Response) Error(c *gin.Context, err *errcode.Error) {
-	response := gin.H{"code": err.Code(), "msg": err.Msg(), "data": gin.H{}}
-	details := err.Details()
-	if len(details) > 0 {
-		response["details"] = details
+func (r *Response) Error(ctx *gin.Context, err error) {
+	if err != nil {
+		if v, ok := err.(*errcode.Error); ok {
+			response := Response{
+				Code:    v.Code(),
+				Msg:     v.Msg(),
+				Data:    gin.H{},
+				Details: []string{},
+			}
+			details := v.Details()
+			if len(details) > 0 {
+				response.Details = details
+			}
+			ctx.JSON(v.StatusCode(), response)
+			return
+		}
 	}
 
-	c.JSON(err.StatusCode(), response)
+	ctx.JSON(http.StatusOK, Response{
+		Code: errcode.Success.Code(),
+		Msg:  errcode.Success.Msg(),
+		Data: gin.H{},
+	})
 }

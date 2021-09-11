@@ -6,54 +6,60 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/yqchilde/gint/pkg/config"
-	"github.com/yqchilde/gint/pkg/logger"
+	"github.com/yqchilde/gin-skeleton/pkg/conf"
+	"github.com/yqchilde/gin-skeleton/pkg/log"
 )
 
 type App struct {
-	cfg    *config.Config
-	opts   *options
+	c      *conf.Config
+	opts   options
 	ctx    context.Context
 	cancel func()
-	log    logger.Logger
+	log    log.Logger
 }
 
-func New(cfg *config.Config, opts ...Option) *App {
-	options := &options{
-		ctx:  context.Background(),
-		sigs: []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
-		log:  logger.GetLogger(),
+func New(c *conf.Config, opts ...Option) *App {
+	options := options{
+		ctx:              context.Background(),
+		logger:           log.GetLogger(),
+		sigs:             []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
+		registrarTimeout: 10 * time.Second,
 	}
 	for _, o := range opts {
-		o(options)
+		o(&options)
 	}
 
 	ctx, cancel := context.WithCancel(options.ctx)
 	return &App{
-		cfg:    cfg,
+		c:      c,
 		opts:   options,
 		ctx:    ctx,
+		log:    log.GetLogger(),
 		cancel: cancel,
-		log:    logger.GetLogger(),
 	}
 }
 
+// Run start app
 func (a *App) Run() error {
-	a.log.Infof("app_name: %s", a.opts.name)
+	a.log.Infof("app_id: %s, app_name: %s, version: %s",
+		a.opts.name,
+	)
 	eg, ctx := errgroup.WithContext(a.ctx)
 
 	// start server
 	for _, srv := range a.opts.servers {
 		srv := srv
 		eg.Go(func() error {
+			// wait for stop signal
 			<-ctx.Done()
-			return srv.Stop()
+			return srv.Stop(ctx)
 		})
 		eg.Go(func() error {
-			return srv.Start()
+			return srv.Start(ctx)
 		})
 	}
 
@@ -78,6 +84,7 @@ func (a *App) Run() error {
 	return nil
 }
 
+// Stop stops the application gracefully.
 func (a *App) Stop() error {
 	if a.cancel != nil {
 		a.cancel()
