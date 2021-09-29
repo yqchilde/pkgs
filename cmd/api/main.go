@@ -5,7 +5,7 @@ import (
 
 	"github.com/yqchilde/gin-skeleton/internal/server"
 	"github.com/yqchilde/gin-skeleton/internal/store"
-	"github.com/yqchilde/gin-skeleton/pkg/app"
+	ginSkeleton "github.com/yqchilde/gin-skeleton/pkg/app"
 	"github.com/yqchilde/gin-skeleton/pkg/conf"
 	logger "github.com/yqchilde/gin-skeleton/pkg/log"
 	"github.com/yqchilde/gin-skeleton/pkg/redis"
@@ -25,16 +25,16 @@ func main() {
 
 	gin.SetMode(conf.Conf.App.Mode)
 
-	_app := app.New(
+	app := ginSkeleton.New(
 		cfg,
-		app.WithName(cfg.App.Name),
-		app.WithLogger(logger.GetLogger()),
-		app.Server(
+		ginSkeleton.WithName(cfg.App.Name),
+		ginSkeleton.WithLogger(logger.GetLogger()),
+		ginSkeleton.Server(
 			server.NewHttpServer(conf.Conf),
 		),
 	)
 
-	if err := _app.Run(); err != nil {
+	if err := app.Run(); err != nil {
 		panic(err)
 	}
 }
