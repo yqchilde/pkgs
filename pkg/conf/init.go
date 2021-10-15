@@ -68,6 +68,7 @@ func ParseConfig(v *viper.Viper) (*Config, error) {
 func watchConfig(v *viper.Viper) {
 	v.WatchConfig()
 	v.OnConfigChange(func(e fsnotify.Event) {
+		_ = v.Unmarshal(&Conf)
 		log.Printf("Config file changed: %s", e.Name)
 	})
 }

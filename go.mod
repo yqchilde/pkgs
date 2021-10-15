@@ -18,6 +18,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.8.1
 	github.com/swaggo/gin-swagger v1.3.1
+	github.com/swaggo/swag v1.7.1
 	github.com/toolkits/net v0.0.0-20160910085801-3f39ab6fe3ce
 	go.uber.org/zap v1.19.1
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
@@ -72,7 +73,6 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
-	github.com/swaggo/swag v1.7.1 // indirect
 	github.com/ugorji/go/codec v1.1.13 // indirect
 	go.opentelemetry.io/otel v1.0.0-RC2 // indirect
 	go.opentelemetry.io/otel/trace v1.0.0-RC2 // indirect
