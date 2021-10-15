@@ -2,15 +2,20 @@ package redis
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"time"
 
+	"github.com/alicebob/miniredis/v2"
 	"github.com/go-redis/redis/extra/redisotel/v8"
 	"github.com/go-redis/redis/v8"
-
-	"github.com/yqchilde/gin-skeleton/pkg/log"
 )
 
-var RC *redis.Client
+var (
+	RC         *redis.Client
+	ValueTrue  = 1
+	ValueFalse = 0
+)
 
 // ErrRedisNotFound not exist in redis
 const ErrRedisNotFound = redis.Nil
@@ -54,4 +59,18 @@ func Init(c *Config) *redis.Client {
 	}
 
 	return RC
+}
+
+// InitTestRedis A redis instance for unit testing
+func InitTestRedis() {
+	mr, err := miniredis.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	// defer mr.Close()
+	RC = redis.NewClient(&redis.Options{
+		Addr: mr.Addr(),
+	})
+	fmt.Println("mini redis addr:", mr.Addr())
 }

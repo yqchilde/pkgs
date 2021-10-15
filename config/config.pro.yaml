@@ -92,8 +92,8 @@ redis:
   # 允许写超时时间
   write-timeout: 500ms
   # 连接池大小
-  pool-size: 12000
+  pool-size: 100
   # 连接池超时时间
-  pool-timeout: 240
+  pool-timeout: 240s
   # 是否开启trace
   is-trace: true
