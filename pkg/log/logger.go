@@ -5,9 +5,6 @@ import (
 )
 
 type Logger interface {
-	Debug(args ...interface{})
-	Debugf(format string, args ...interface{})
-
 	Info(args ...interface{})
 	Infof(format string, args ...interface{})
 
@@ -16,11 +13,6 @@ type Logger interface {
 
 	Error(args ...interface{})
 	Errorf(format string, args ...interface{})
-
-	Fatal(args ...interface{})
-	Fatalf(format string, args ...interface{})
-
-	Panicf(format string, args ...interface{})
 
 	WithFields(keyValues Fields) Logger
 }
@@ -53,12 +45,15 @@ func newLogger(cfg *Config) (Logger, error) {
 
 func Init(cfg *Config) Logger {
 	var err error
+
+	// new zap logger
 	zl, err = newZapLogger(cfg)
 	if err != nil {
 		fmt.Errorf("init newZapLogger err: %v", err)
 	}
 	_ = zl
 
+	// new sugar logger
 	log, err = newLogger(cfg)
 	if err != nil {
 		fmt.Errorf("init newLogger err: %v", err)
@@ -68,11 +63,6 @@ func Init(cfg *Config) Logger {
 
 func GetLogger() Logger {
 	return log
-}
-
-// Debug log
-func Debug(args ...interface{}) {
-	log.Debug(args...)
 }
 
 // Info log
@@ -90,16 +80,6 @@ func Error(args ...interface{}) {
 	log.Error(args...)
 }
 
-// Fatal log
-func Fatal(args ...interface{}) {
-	log.Fatal(args...)
-}
-
-// Debugf log
-func Debugf(format string, args ...interface{}) {
-	log.Debugf(format, args...)
-}
-
 // Infof log
 func Infof(format string, args ...interface{}) {
 	log.Infof(format, args...)
@@ -113,16 +93,6 @@ func Warnf(format string, args ...interface{}) {
 // Errorf log
 func Errorf(format string, args ...interface{}) {
 	log.Errorf(format, args...)
-}
-
-// Fatalf log
-func Fatalf(format string, args ...interface{}) {
-	log.Fatalf(format, args...)
-}
-
-// Panicf log
-func Panicf(format string, args ...interface{}) {
-	log.Panicf(format, args...)
 }
 
 // WithFields log

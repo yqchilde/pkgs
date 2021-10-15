@@ -15,12 +15,14 @@ const (
 // Write log by time
 func getLogWriterWithTime(cfg *Config, filename string) io.Writer {
 	logFullPath := filename
-	rotationPolicy := cfg.LogRollingPolicy
+	rollingPolicy := cfg.LogRollingPolicy
 	backupCount := cfg.LogBackupCount
 
-	rollingDuration := time.Hour * 24
-	if rotationPolicy == RollingTimeHourly {
+	var rollingDuration time.Duration
+	if rollingPolicy == RollingTimeHourly {
 		rollingDuration = time.Hour
+	} else if rollingPolicy == RollingTimeDaily {
+		rollingDuration = time.Hour * 24
 	}
 
 	hook, err := rotatelogs.New(
