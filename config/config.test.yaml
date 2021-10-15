@@ -70,9 +70,11 @@ mysql:
   # 最大打开的连接数，需要小于数据库配置中的max-connections数
   max-open-conn: 60
   # 单个连接的最大存活时间，建议设置比数据库超时时长(wait_timeout)稍小一些
-  conn-max-life-time: 60m
+  conn-max-life-time: 4h
   # 是否自动迁移Model的数据表
   auto-migrate: true
+  # 慢查询阈值，设置后只打印慢查询日志，默认为500ms
+  slow-threshold: 0
 
 redis:
   # 数据库地址，如果是docker，可以替换为对应的服务名称，eg:db:6379

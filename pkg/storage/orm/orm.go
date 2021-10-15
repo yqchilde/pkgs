@@ -3,13 +3,13 @@ package orm
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	gormLogger "gorm.io/gorm/logger"
-
-	"github.com/yqchilde/gin-skeleton/pkg/log"
+	"gorm.io/gorm/logger"
 )
 
 type Config struct {
@@ -22,6 +22,7 @@ type Config struct {
 	MaxIdleConn     int           `mapstructure:"max-idle-conn"`
 	MaxOpenConn     int           `mapstructure:"max-open-conn"`
 	ConnMaxLifeTime time.Duration `mapstructure:"conn-max-life-time"`
+	SlowThreshold   time.Duration `mapstructure:"slow-threshold"`
 }
 
 // NewMySQL generate mysql orm instance
@@ -32,7 +33,8 @@ func NewMySQL(c *Config) (db *gorm.DB) {
 		c.Addr,
 		c.Database,
 		true,
-		"Local")
+		"Local",
+	)
 
 	sqlDB, err := sql.Open("mysql", dsn)
 	if err != nil {
@@ -53,12 +55,27 @@ func NewMySQL(c *Config) (db *gorm.DB) {
 }
 
 func gormConfig(c *Config) *gorm.Config {
-	if !c.ShowLog {
-		return &gorm.Config{}
+	// Foreign key constraints are prohibited
+	// Foreign key constraints are not recommended for production environments
+	config := &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true}
+
+	// Print all logs
+	if c.ShowLog {
+		config.Logger = logger.Default.LogMode(logger.Info)
+	} else {
+		config.Logger = logger.Default.LogMode(logger.Silent)
 	}
 
-	return &gorm.Config{
-		Logger:                                   gormLogger.Default.LogMode(gormLogger.Info),
-		DisableForeignKeyConstraintWhenMigrating: true,
+	// Print slow query log
+	if c.SlowThreshold > 0 {
+		config.Logger = logger.New(
+			log.New(os.Stdout, "\r\n", log.LstdFlags),
+			logger.Config{
+				SlowThreshold: c.SlowThreshold,
+				Colorful:      true,
+				LogLevel:      logger.Warn,
+			},
+		)
 	}
+	return config
 }
