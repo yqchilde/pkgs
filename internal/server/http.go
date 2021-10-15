@@ -9,20 +9,11 @@ import (
 func NewHttpServer(c *conf.Config) *http.Server {
 	router := routers.NewRouter()
 
-	var opts []http.ServerOption
-	if c.HTTP.Network != "" {
-		opts = append(opts, http.Network(c.HTTP.Network))
-	}
-	if c.HTTP.Addr != "" {
-		opts = append(opts, http.Address(c.HTTP.Addr))
-	}
-	if c.HTTP.ReadTimeout != 0 {
-		opts = append(opts, http.Timeout(c.HTTP.ReadTimeout))
-	}
-	if c.HTTP.WriteTimeout != 0 {
-		opts = append(opts, http.Timeout(c.HTTP.WriteTimeout))
-	}
-	srv := http.NewServer(opts...)
+	srv := http.NewServer(
+		http.WithAddress(c.HTTP.Addr),
+		http.WithReadTimeout(c.HTTP.ReadTimeout),
+		http.WithWriteTimeout(c.HTTP.WriteTimeout),
+	)
 
 	srv.Handler = router
 

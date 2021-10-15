@@ -51,6 +51,7 @@ func NewMySQL(c *Config) (db *gorm.DB) {
 	}
 	db.Set("gorm:table_options", "CHARSET=utf8mb4")
 
+	log.Println("mysql connected and running!")
 	return db
 }
 

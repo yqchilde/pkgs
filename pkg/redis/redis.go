@@ -58,6 +58,7 @@ func Init(c *Config) *redis.Client {
 		RC.AddHook(redisotel.NewTracingHook())
 	}
 
+	log.Println("redis connected and running!")
 	return RC
 }
 

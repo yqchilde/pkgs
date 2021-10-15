@@ -12,6 +12,7 @@ import (
 type Option func(o *options)
 
 type options struct {
+	id   string
 	name string
 
 	sigs []os.Signal
@@ -20,6 +21,12 @@ type options struct {
 	logger           log.Logger
 	registrarTimeout time.Duration
 	servers          []transport.Server
+}
+
+func WithID(id string) Option {
+	return func(o *options) {
+		o.id = id
+	}
 }
 
 func WithName(name string) Option {

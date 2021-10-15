@@ -16,8 +16,8 @@ app:
 
 http:
   addr: :8080
-  read-timeout: 5
-  write-timeout: 5
+  read-timeout: 3s
+  write-timeout: 3s
 
 grpc:
   addr: :9090
