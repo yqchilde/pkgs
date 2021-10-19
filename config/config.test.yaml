@@ -1,6 +1,8 @@
 app:
   # 项目名字
   name: gin-skeleton
+  # 项目版本
+  version: 1.0.0
   # 项目模式：debug, release, test
   mode: debug
   # 开启ssl
@@ -84,7 +86,7 @@ redis:
   # 数据库索引
   db: 0
   # 最小闲置连接数
-  min-idle-conn: 200
+  min-idle-conn: 60
   # 连接超时时间
   dial-timeout: 60s
   # 允许读超时时间

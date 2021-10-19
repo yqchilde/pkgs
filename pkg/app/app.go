@@ -8,7 +8,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/google/uuid"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/yqchilde/gin-skeleton/pkg/conf"
@@ -30,9 +29,6 @@ func New(c *conf.Config, opts ...Option) *App {
 		sigs:             []os.Signal{syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT},
 		registrarTimeout: 10 * time.Second,
 	}
-	if id, err := uuid.NewUUID(); err == nil {
-		options.id = id.String()
-	}
 	for _, o := range opts {
 		o(&options)
 	}
@@ -49,7 +45,7 @@ func New(c *conf.Config, opts ...Option) *App {
 
 // Run start app
 func (a *App) Run() error {
-	a.log.Infof("app_name: %s, app_id: %s", a.opts.name, a.opts.id)
+	a.log.Infof("app_name: %s, app_version: %s", a.opts.name, a.opts.version)
 	eg, ctx := errgroup.WithContext(a.ctx)
 
 	// start server

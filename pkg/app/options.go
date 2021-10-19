@@ -12,8 +12,8 @@ import (
 type Option func(o *options)
 
 type options struct {
-	id   string
-	name string
+	name    string
+	version string
 
 	sigs []os.Signal
 	ctx  context.Context
@@ -23,15 +23,15 @@ type options struct {
 	servers          []transport.Server
 }
 
-func WithID(id string) Option {
-	return func(o *options) {
-		o.id = id
-	}
-}
-
 func WithName(name string) Option {
 	return func(o *options) {
 		o.name = name
+	}
+}
+
+func WithVersion(version string) Option {
+	return func(o *options) {
+		o.version = version
 	}
 }
 

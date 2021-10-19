@@ -28,6 +28,7 @@ func main() {
 	app := ginSkeleton.New(
 		cfg,
 		ginSkeleton.WithName(cfg.App.Name),
+		ginSkeleton.WithVersion(cfg.App.Version),
 		ginSkeleton.WithLogger(logger.GetLogger()),
 		ginSkeleton.Server(
 			server.NewHttpServer(conf.Conf),

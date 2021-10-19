@@ -1,18 +1,12 @@
 package utils
 
 import (
+	"bytes"
 	"math/rand"
-	"os"
+	"runtime"
+	"strconv"
 	"time"
 )
-
-func GetHostname() string {
-	name, err := os.Hostname()
-	if err != nil {
-		name = "unknown"
-	}
-	return name
-}
 
 func RandomStr(n int) string {
 	var r = rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -27,4 +21,18 @@ func RandomStr(n int) string {
 	}
 
 	return string(salt)
+}
+
+// GetGoroutineID generate a goroutine id
+func GetGoroutineID() int {
+	b := make([]byte, 64)
+	b = b[:runtime.Stack(b, false)]
+	b = bytes.TrimPrefix(b, []byte("goroutine "))
+	b = b[:bytes.IndexByte(b, ' ')]
+	n, e := strconv.Atoi(string(b))
+	if e != nil {
+		return -1
+	}
+
+	return n
 }

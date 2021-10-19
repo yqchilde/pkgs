@@ -22,10 +22,11 @@ type Config struct {
 
 // AppConfig for application api conf
 type AppConfig struct {
-	Name  string `mapstructure:"name"`
-	Mode  string `mapstructure:"mode"`
-	SSL   bool   `mapstructure:"ssl"`
-	Debug bool   `mapstructure:"debug"`
+	Name    string `mapstructure:"name"`
+	Version string `mapstructure:"version"`
+	Mode    string `mapstructure:"mode"`
+	SSL     bool   `mapstructure:"ssl"`
+	Debug   bool   `mapstructure:"debug"`
 
 	// AuthConfig
 	JwtSecret       string `mapstructure:"jwt-secret"`
