@@ -3,6 +3,7 @@ package log
 import (
 	"os"
 	"strings"
+	"sync"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -14,6 +15,9 @@ const (
 )
 
 var zl *zap.Logger
+
+// Prevent data race from occurring during zap.AddStacktrace
+var zapStacktraceMutex sync.Mutex
 
 type zapLogger struct {
 	sugarLogger *zap.SugaredLogger
@@ -113,7 +117,9 @@ func getWarnCore(encoder zapcore.Encoder, cfg *Config) (zapcore.Core, zap.Option
 	var stackTrace zap.Option
 	warnLevel := zap.LevelEnablerFunc(func(level zapcore.Level) bool {
 		if !cfg.DisableCaller {
+			zapStacktraceMutex.Lock()
 			stackTrace = zap.AddStacktrace(zapcore.WarnLevel)
+			zapStacktraceMutex.Unlock()
 		}
 		return level == zapcore.WarnLevel
 	})
@@ -126,7 +132,9 @@ func getErrorCore(encoder zapcore.Encoder, cfg *Config) (zapcore.Core, zap.Optio
 	var stacktrace zap.Option
 	errorLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		if !cfg.DisableCaller {
+			zapStacktraceMutex.Lock()
 			stacktrace = zap.AddStacktrace(zapcore.ErrorLevel)
+			zapStacktraceMutex.Unlock()
 		}
 		return lvl >= zapcore.ErrorLevel
 	})
