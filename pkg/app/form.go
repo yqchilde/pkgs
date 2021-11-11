@@ -34,8 +34,7 @@ func (v ValidErrors) Errors() []string {
 	return errs
 }
 
-// BindAndValid bind form and verify params
-func BindAndValid(ctx *gin.Context, v interface{}) (bool, ValidErrors) {
+func init() {
 	if validate, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		validate.RegisterTagNameFunc(func(field reflect.StructField) string {
 			name := strings.SplitN(field.Tag.Get("json"), ",", 2)[0]
@@ -45,7 +44,10 @@ func BindAndValid(ctx *gin.Context, v interface{}) (bool, ValidErrors) {
 			return name
 		})
 	}
+}
 
+// BindAndValid bind form and verify params
+func BindAndValid(ctx *gin.Context, v interface{}) (bool, ValidErrors) {
 	var errs ValidErrors
 	if err := ctx.ShouldBind(v); err != nil {
 		v := ctx.Value("trans")

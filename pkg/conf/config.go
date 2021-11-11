@@ -3,6 +3,7 @@ package conf
 import (
 	"time"
 
+	"github.com/yqchilde/gin-skeleton/pkg/i18n"
 	"github.com/yqchilde/gin-skeleton/pkg/log"
 	"github.com/yqchilde/gin-skeleton/pkg/queue/nats"
 	"github.com/yqchilde/gin-skeleton/pkg/redis"
@@ -20,6 +21,7 @@ type Config struct {
 	MySQL  orm.Config
 	Redis  redis.Config
 	Nats   nats.Config
+	I18n   i18n.Config
 }
 
 // AppConfig for application api conf

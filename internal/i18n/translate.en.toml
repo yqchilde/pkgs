@@ -1,0 +1,9 @@
+[application]
+    [application.email_or_password]
+    other = "mail or password is incorrect"
+
+    [application.register_failed]
+    other = "application registration failed"
+
+    [application.delete_application]
+    other = "application deletion failed"

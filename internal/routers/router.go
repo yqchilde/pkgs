@@ -7,15 +7,15 @@ import (
 
 	_ "github.com/yqchilde/gin-skeleton/docs"
 	"github.com/yqchilde/gin-skeleton/internal/handler/v1/application"
+	mw "github.com/yqchilde/gin-skeleton/internal/middleware"
 	"github.com/yqchilde/gin-skeleton/pkg/middleware"
 )
 
 func NewRouter() *gin.Engine {
-	//r := gin.New()
-	r := gin.Default()
-	//r.Use(middleware.NoCache)
-	//r.Use(middleware.Options)
-	//r.Use(middleware.Logging())
+	r := gin.New()
+
+	// Common middleware
+	r.Use(mw.Translations())
 
 	// swagger api docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
