@@ -30,6 +30,10 @@ func CreateApp(ctx *gin.Context) {
 	data, err := service.NewApplicationService(ctx).CreateApp(req.UserID, req.AppName)
 	if err != nil {
 		log.Warnf("CreateApp handler err: %v", err)
+		if _, ok := err.(*errcode.Error); ok {
+			response.Error(ctx, err)
+			return
+		}
 		response.Error(ctx, ecode.ErrEmailOrPassword)
 		return
 	}
@@ -56,6 +60,10 @@ func DeleteApp(ctx *gin.Context) {
 	err := service.NewApplicationService(ctx).DeleteApp(appID)
 	if err != nil {
 		log.Warnf("DeleteApp handler err: %v", err)
+		if _, ok := err.(*errcode.Error); ok {
+			response.Error(ctx, err)
+			return
+		}
 		response.Error(ctx, ecode.ErrDeleteApplication)
 		return
 	}

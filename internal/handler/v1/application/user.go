@@ -30,6 +30,10 @@ func Register(ctx *gin.Context) {
 	err := service.NewApplicationService(ctx).Register(req.Email, req.Password, req.FirstName, req.LastName)
 	if err != nil {
 		log.Warnf("Register handler err: %v", err)
+		if _, ok := err.(*errcode.Error); ok {
+			response.Error(ctx, err)
+			return
+		}
 		response.Error(ctx, ecode.ErrRegisterFailed)
 		return
 	}
@@ -57,6 +61,10 @@ func Login(ctx *gin.Context) {
 	t, err := service.NewApplicationService(ctx).Login(req.Email, req.Password)
 	if err != nil {
 		log.Warnf("Login handler err: %v", err)
+		if _, ok := err.(*errcode.Error); ok {
+			response.Error(ctx, err)
+			return
+		}
 		response.Error(ctx, ecode.ErrEmailOrPassword)
 		return
 	}
