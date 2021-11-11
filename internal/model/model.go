@@ -1,11 +1,15 @@
 package model
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type BaseModel struct {
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt time.Time `json:"deleted_at"`
+	ID        uint         `json:"-" gorm:"primarykey"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt time.Time    `json:"updated_at"`
+	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 }
 
 type Tabler interface {

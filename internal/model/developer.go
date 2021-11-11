@@ -1,7 +1,7 @@
 package model
 
 type Developer struct {
-	UserID    string `json:"user_id,omitempty" gorm:"primaryKey;type:char(36)"`
+	UserID    string `json:"user_id,omitempty" gorm:"type:char(36);index"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
