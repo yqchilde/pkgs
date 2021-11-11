@@ -13,6 +13,7 @@ require (
 	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-redis/redis/extra/redisotel/v8 v8.11.3
 	github.com/go-redis/redis/v8 v8.11.3
+	github.com/golang/snappy v0.0.4
 	github.com/google/uuid v1.1.2
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/pkg/errors v0.9.1
