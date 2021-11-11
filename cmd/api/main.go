@@ -1,6 +1,10 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	_ "net/http/pprof"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/yqchilde/gin-skeleton/internal/server"
@@ -24,6 +28,13 @@ func main() {
 	redis.Init(&cfg.Redis)
 
 	gin.SetMode(conf.Conf.App.Mode)
+
+	// init pprof server
+	go func() {
+		if err := http.ListenAndServe(conf.Conf.App.PprofPort, http.DefaultServeMux); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen ListenAndServe for Pprof, err: %s", err.Error())
+		}
+	}()
 
 	app := ginSkeleton.New(
 		cfg,
