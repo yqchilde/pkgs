@@ -12,6 +12,7 @@ import (
 	ginSkeleton "github.com/yqchilde/gin-skeleton/pkg/app"
 	"github.com/yqchilde/gin-skeleton/pkg/conf"
 	logger "github.com/yqchilde/gin-skeleton/pkg/log"
+	"github.com/yqchilde/gin-skeleton/pkg/queue/nats"
 	"github.com/yqchilde/gin-skeleton/pkg/redis"
 )
 
@@ -26,6 +27,7 @@ func main() {
 	logger.Init(&cfg.Logger)
 	store.Init(&cfg.MySQL)
 	redis.Init(&cfg.Redis)
+	nats.Init(&cfg.Nats)
 
 	gin.SetMode(conf.Conf.App.Mode)
 

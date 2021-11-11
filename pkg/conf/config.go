@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/yqchilde/gin-skeleton/pkg/log"
+	"github.com/yqchilde/gin-skeleton/pkg/queue/nats"
 	"github.com/yqchilde/gin-skeleton/pkg/redis"
 	"github.com/yqchilde/gin-skeleton/pkg/storage/orm"
 )
@@ -18,6 +19,7 @@ type Config struct {
 	Logger log.Config
 	MySQL  orm.Config
 	Redis  redis.Config
+	Nats   nats.Config
 }
 
 // AppConfig for application api conf
