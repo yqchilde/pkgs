@@ -8,7 +8,7 @@ import (
 // BuildCacheKey Build a cache key with a prefix
 func BuildCacheKey(keyPrefix string, key string) (cacheKey string, err error) {
 	if key == "" {
-		return "", errors.New("[cache] key should not be empty")
+		return "", errors.New("cache: key should not be empty")
 	}
 
 	cacheKey = key
