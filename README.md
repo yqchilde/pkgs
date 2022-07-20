@@ -1,7 +1,3 @@
-# gin-skeleton
-self use, sort out, sum up
+## 介绍
 
-### swagger
-```shell
-swag init -g cmd/api/main.go -o docs
-```
+整理自用pkgs库，借鉴了一些优秀的开源项目，例如 `eagle`
