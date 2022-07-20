@@ -9,7 +9,7 @@ import (
 func TestInitTestRedis(t *testing.T) {
 	InitTestRedis()
 
-	err := RC.Ping(context.TODO()).Err()
+	err := RClient.Ping(context.TODO()).Err()
 	if err != nil {
 		t.Error("ping redis server err: ", err)
 		return
@@ -22,9 +22,9 @@ func TestRedisSetGet(t *testing.T) {
 
 	var setGetKey = "test-set"
 	var setGetValue = "test-content"
-	RC.Set(context.Background(), setGetKey, setGetValue, time.Second*100)
+	RClient.Set(context.Background(), setGetKey, setGetValue, time.Second*100)
 
-	expectValue := RC.Get(context.Background(), setGetKey).Val()
+	expectValue := RClient.Get(context.Background(), setGetKey).Val()
 	if setGetValue != expectValue {
 		t.Log("original value: ", setGetValue)
 		t.Log("expect value: ", expectValue)
