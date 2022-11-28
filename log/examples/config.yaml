@@ -1,0 +1,8 @@
+encoding: "console"
+level: "info"
+writers: "console,file"
+logName: "test"
+logRollingPolicy: "volume"
+logRollingTimePattern: "0 0 */1 * * *"
+logRollingVolumeSize: "10mb"
+logBackupCount: 5

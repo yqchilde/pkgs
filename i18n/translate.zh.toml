@@ -1,0 +1,9 @@
+[application]
+    [application.email_or_password]
+    other = "邮箱或密码错误"
+
+    [application.register_failed]
+    other = "应用注册失败"
+
+    [application.delete_application]
+    other = "应用删除失败"
