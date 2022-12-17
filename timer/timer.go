@@ -10,10 +10,13 @@ import (
 
 type Timer interface {
 	// AddTaskByFunc 通过函数的方式添加任务
-	AddTaskByFunc(taskName string, spec string, task func()) (cron.EntryID, error)
+	AddTaskByFunc(taskName string, spec string, task func(), opts ...cron.Option) (cron.EntryID, error)
 
 	// AddTaskByJob 通过接口的方法添加任务
-	AddTaskByJob(taskName string, spec string, job interface{ Run() }) (cron.EntryID, error)
+	AddTaskByJob(taskName string, spec string, job interface{ Run() }, opts ...cron.Option) (cron.EntryID, error)
+
+	// FindAllTaskCron 获取所有的cron
+	FindAllTaskCron() map[string]*cron.Cron
 
 	// FindTaskCron 获取对应的taskName的cron，可能为空
 	FindTaskCron(taskName string) (*cron.Cron, bool)
@@ -40,11 +43,11 @@ type timer struct {
 }
 
 // AddTaskByFunc 通过函数的方式添加任务
-func (t *timer) AddTaskByFunc(taskName string, spec string, task func()) (cron.EntryID, error) {
+func (t *timer) AddTaskByFunc(taskName string, spec string, task func(), opts ...cron.Option) (cron.EntryID, error) {
 	t.Lock()
 	defer t.Unlock()
 	if _, ok := t.taskList[taskName]; !ok {
-		t.taskList[taskName] = cron.New(cron.WithSeconds())
+		t.taskList[taskName] = cron.New(opts...)
 	}
 	id, err := t.taskList[taskName].AddFunc(spec, task)
 	t.taskList[taskName].Start()
@@ -52,15 +55,20 @@ func (t *timer) AddTaskByFunc(taskName string, spec string, task func()) (cron.E
 }
 
 // AddTaskByJob 通过接口的方法添加任务
-func (t *timer) AddTaskByJob(taskName string, spec string, job interface{ Run() }) (cron.EntryID, error) {
+func (t *timer) AddTaskByJob(taskName string, spec string, job interface{ Run() }, opts ...cron.Option) (cron.EntryID, error) {
 	t.Lock()
 	defer t.Unlock()
 	if _, ok := t.taskList[taskName]; !ok {
-		t.taskList[taskName] = cron.New(cron.WithSeconds())
+		t.taskList[taskName] = cron.New(opts...)
 	}
 	id, err := t.taskList[taskName].AddJob(spec, job)
 	t.taskList[taskName].Start()
 	return id, err
+}
+
+// FindAllTaskCron 获取所有的cron
+func (t *timer) FindAllTaskCron() map[string]*cron.Cron {
+	return t.taskList
 }
 
 // FindTaskCron 获取对应的taskName的cron，可能为空
