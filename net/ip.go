@@ -8,9 +8,11 @@ import (
 	"net"
 	"net/http"
 	"os/exec"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var clientIP = "192.168.0.1"
@@ -304,4 +306,25 @@ func GetRealIP(req *http.Request) (ip string) {
 	}
 	ip, _, _ = net.SplitHostPort(req.RemoteAddr)
 	return ip
+}
+
+// CheckoutIpPort 检出IP和端口
+func CheckoutIpPort(str string) (string, error) {
+	reg, err := regexp.Compile("((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}:[0-9]{1,5}")
+	if err != nil {
+		return "", errors.New("匹配Ip+Port失败")
+	}
+	return reg.FindString(str), nil
+}
+
+func PingConn(ipPort string, timeout time.Duration) bool {
+	if timeout == 0 {
+		timeout = 5 * time.Second
+	}
+	conn, err := net.DialTimeout("tcp", ipPort, timeout)
+	if err != nil {
+		return false
+	}
+	_ = conn.Close()
+	return true
 }
